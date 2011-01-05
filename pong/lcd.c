@@ -26,11 +26,15 @@ volatile uint8_t LCD_ORIENTATION;
 // DOG: 128 x 64 with 6x8 Font => 21 x 8
 // MAX7456: 30 x 16
 
+/* display is connected to PORTBx
+ * pins -> lcd.h
+ * */
+
 uint8_t lcd_xpos;
 uint8_t lcd_ypos;
 
 
-void send_byte (uint8_t data)
+void send_byte (uint8_t data)	//send via SPI
 {
 	clr_cs ();
 	SPDR = data;
@@ -48,18 +52,18 @@ void lcd_cls (void)
 	for (i = 0; i < DISP_BUFFER; i++)
 		display_buffer[i] = 0x00;
 	
-	for (i = 0; i < 8; i++)
+	for (i = 0; i < 8; i++)		//i -> page adress, Write all px on a page
 	{
-		clr_A0 ();
-		send_byte (0xB0 + i);	//1011xxxx
-		send_byte (0x10);			//00010000
+		clr_A0 ();				//lcd: command mode
+		send_byte (0xB0 + i);	//1011xxxx -> lcd: page address set
+		send_byte (0x10);		//00010000 -> lcd: column address set msb(==0x00)
 //		send_byte(0x04);		//00000100 gedreht plus 4 Byte
 //		send_byte(0x00);		//00000000
-		send_byte (LCD_ORIENTATION);	//00000000
+		send_byte (LCD_ORIENTATION);	//00000000 -> lcd: column address set lsb(==0x00)
 
-		set_A0 ();
+		set_A0 ();				//lcd: write mode
 		for (j = 0; j < 128; j++)
-			send_byte (0x00);
+			send_byte (0x00);  //write data to all 128 columns(==fill page)
 	}
 
 	lcd_xpos = 0;
@@ -79,17 +83,20 @@ void wait_ms (uint16_t time)
 		wait_1ms ();
 }
 
-void LCD_Init (void)
+void/ LCD_Init (void)
 {
 	lcd_xpos = 0;
 	lcd_ypos = 0;
 
 	DDRB = 0xFF;
 
-	// SPI max. speed
-	// the DOGM128 lcd controller can work at 20 MHz
-	SPCR = (1 << SPE) | (1 << MSTR) | (1 << CPHA) | (1 << CPOL);
-	SPSR = (1 << SPI2X);
+	/* SPI max. speed
+	* the DOGM128 lcd controller can work at 20 MHz
+	* compare to datasheet of atmel644, page 157
+	*/
+	
+	SPCR = (1 << SPE) | (1 << MSTR) | (1 << CPHA) | (1 << CPOL); //SPI Control Register
+	SPSR = (1 << SPI2X);		//SPI Status Register
 	
 	set_cs ();
 	clr_reset ();
@@ -97,19 +104,23 @@ void LCD_Init (void)
 	set_reset ();
 	
 	clr_cs ();
-	clr_A0 ();
+	clr_A0 ();			//lcd: commmand mode (a0 == 0)
 	
-	send_byte (0x40);
+	/* lcd: compare to initialisation example (low power mode)
+	 * lcd: dogl128-6e.pdf page 6
+	 */
+
+	send_byte (0x40); 
 
 	if (LCD_ORIENTATION == 0)
 	{
-		send_byte (0xA1); // A1 normal A0 reverse(original)
-		send_byte (0xC0); // C0 normal C8 reverse(original)
+		send_byte (0xA1); // $A1 normal $A0 reverse(original)
+		send_byte (0xC0); // $C0 normal $C8 reverse(original)
 	}
 	else
 	{
-		send_byte (0xA0); // A1 normal A0 reverse(original)
-		send_byte (0xC8); // C0 normal C8 reverse(original)
+		send_byte (0xA0); // $A1 normal $A0 reverse(original)
+		send_byte (0xC8); // $C0 normal $C8 reverse(original)
 	}
 	send_byte (0xA6);
 	send_byte (0xA2);
@@ -127,7 +138,7 @@ void LCD_Init (void)
 }
 
 
-void set_adress (uint16_t adress, uint8_t data)
+void set_adress (uint16_t adress, uint8_t data) //adress format: 0xppcc pp page, cc column
 {
 	uint8_t page;
 	uint8_t column;
@@ -141,8 +152,8 @@ void set_adress (uint16_t adress, uint8_t data)
 //	column = (adress & 0x7F);
 	column = (adress & 0x7F) + LCD_ORIENTATION;
 
-	send_byte (0x10 + (column >> 4));
-	send_byte (column & 0x0F);
+	send_byte (0x10 + (column >> 4)); 	//send high part
+	send_byte (column & 0x0F);			//send low part
 	
 	set_A0 ();
 	send_byte (data);

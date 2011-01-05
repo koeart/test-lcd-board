@@ -2,11 +2,11 @@
 #define _LCD_H
 
 
-#define set_cs()    (PORTB |=  (1 << PB4))
-#define clr_cs()    (PORTB &= ~(1 << PB4))
-#define set_A0()    (PORTB |=  (1 << PB3))          // Data
-#define clr_A0()    (PORTB &= ~(1 << PB3))          // Command
-#define set_reset() (PORTB |=  (1 << PB2))
+#define set_cs()    (PORTB |=  (1 << PB4))			// set chip_select
+#define clr_cs()    (PORTB &= ~(1 << PB4))			//pin = output
+#define set_A0()    (PORTB |=  (1 << PB3))          // a0: 1 write Data
+#define clr_A0()    (PORTB &= ~(1 << PB3))          // a0: 0 command mode
+#define set_reset() (PORTB |=  (1 << PB2))			//reset on
 #define clr_reset() (PORTB &= ~(1 << PB2))
 
          
