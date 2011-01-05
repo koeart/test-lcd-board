@@ -11,6 +11,9 @@
 #include "timer.h"
 #include "tetris.h"
 
+int xmax;
+int ymax;
+
 
 
 void tetris() {
