@@ -1,0 +1,25 @@
+### LED PROJEKT ###
+## author: koeart
+## icq: 151139958
+## jid: koeart@jabber.ccc.de
+## email: paul@schwanse.de
+## gpg key-id: 256EAEC3
+
+# information about the project:
+Homepage:   http://kopfueber.wordpress.com
+GIT:        https://github.com/koeart/test-lcd-board
+
+## about
+# the board (v1.3a) was designed by seb@exse.net
+# it has an atmel644P, USB, DOT-Matrix LCD (128 x 64), 4 push-buttons, couple other io
+
+## software
+./pong:
+  first try of pong
+
+./firstHello
+  simple hello World
+
+./displayExample
+  demoprogram
+
