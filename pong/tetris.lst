@@ -1,0 +1,46 @@
+   1               		.file	"tetris.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.global	tetris
+  11               	tetris:
+  12               	/* prologue: function */
+  13               	/* frame size = 0 */
+  14 0000 84E0      		ldi r24,lo8(4)
+  15 0002 62E0      		ldi r22,lo8(2)
+  16 0004 40E0      		ldi r20,lo8(__c.1865)
+  17 0006 50E0      		ldi r21,hi8(__c.1865)
+  18 0008 20E0      		ldi r18,lo8(0)
+  19 000a 0E94 0000 		call lcd_printp_at
+  20 000e 88EE      		ldi r24,lo8(1000)
+  21 0010 93E0      		ldi r25,hi8(1000)
+  22 0012 0E94 0000 		call wait_ms
+  23               	/* epilogue start */
+  24 0016 0895      		ret
+  26               		.section	.progmem.data,"a",@progbits
+  29               	__c.1865:
+  30 0000 5445 5452 		.string	"TETRIS!\r\n"
+  30      4953 210D 
+  30      0A00 
+  31               		.comm debug,2,1
+  32               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 tetris.c
+     /tmp/cc7BLNdS.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc7BLNdS.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc7BLNdS.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc7BLNdS.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc7BLNdS.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc7BLNdS.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc7BLNdS.s:11     .text:00000000 tetris
+     /tmp/cc7BLNdS.s:29     .progmem.data:00000000 __c.1865
+                            *COM*:00000002 debug
+
+UNDEFINED SYMBOLS
+lcd_printp_at
+wait_ms
+__do_clear_bss

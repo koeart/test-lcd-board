@@ -1,0 +1,20 @@
+
+[indentation]
+indent_width=4
+indent_type=1
+indent_hard_tab_width=8
+detect_indent=false
+indent_mode=2
+
+[project]
+name=firstHello
+base_path=/home/koeart/display/firstHello
+description=
+
+[long line marker]
+long_line_behaviour=1
+long_line_column=72
+
+[files]
+current_page=0
+FILE_NAME_0=0;C;0;16;1;1;0;/home/koeart/display/firstHello/main.c;0

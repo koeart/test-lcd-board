@@ -1,0 +1,327 @@
+   1               		.file	"main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.global	main
+  11               	main:
+  12 0000 2F92      		push r2
+  13 0002 3F92      		push r3
+  14 0004 4F92      		push r4
+  15 0006 5F92      		push r5
+  16 0008 6F92      		push r6
+  17 000a 7F92      		push r7
+  18 000c 8F92      		push r8
+  19 000e 9F92      		push r9
+  20 0010 AF92      		push r10
+  21 0012 BF92      		push r11
+  22 0014 CF92      		push r12
+  23 0016 DF92      		push r13
+  24 0018 EF92      		push r14
+  25 001a FF92      		push r15
+  26 001c 0F93      		push r16
+  27 001e DF93      		push r29
+  28 0020 CF93      		push r28
+  29 0022 00D0      		rcall .
+  30 0024 00D0      		rcall .
+  31 0026 00D0      		rcall .
+  32 0028 CDB7      		in r28,__SP_L__
+  33 002a DEB7      		in r29,__SP_H__
+  34               	/* prologue: function */
+  35               	/* frame size = 6 */
+  36 002c 82B1      		in r24,34-32
+  37 002e 806F      		ori r24,lo8(-16)
+  38 0030 82B9      		out 34-32,r24
+  39 0032 3B9A      		sbi 39-32,3
+  40 0034 439A      		sbi 40-32,3
+  41 0036 87B1      		in r24,39-32
+  42 0038 8360      		ori r24,lo8(3)
+  43 003a 87B9      		out 39-32,r24
+  44 003c 579A      		sbi 42-32,7
+  45 003e 0E94 0000 		call LCD_Init
+  46 0042 0E94 0000 		call USART_Init
+  47 0046 0E94 0000 		call TIMER0_Init
+  48               	/* #APP */
+  49               	 ;  36 "main.c" 1
+  50 004a 7894      		sei
+  51               	 ;  0 "" 2
+  52               	/* #NOAPP */
+  53 004c 0E94 0000 		call lcd_cls
+  54 0050 8AE0      		ldi r24,lo8(10)
+  55 0052 90E0      		ldi r25,hi8(10)
+  56 0054 9C83      		std Y+4,r25
+  57 0056 8B83      		std Y+3,r24
+  58 0058 E1E0      		ldi r30,lo8(1)
+  59 005a F0E0      		ldi r31,hi8(1)
+  60 005c FA83      		std Y+2,r31
+  61 005e E983      		std Y+1,r30
+  62 0060 97E1      		ldi r25,lo8(23)
+  63 0062 892E      		mov r8,r25
+  64 0064 912C      		mov r9,__zero_reg__
+  65 0066 8AE2      		ldi r24,lo8(42)
+  66 0068 A82E      		mov r10,r24
+  67 006a B12C      		mov r11,__zero_reg__
+  68 006c 03E0      		ldi r16,lo8(3)
+  69 006e 602E      		mov r6,r16
+  70 0070 712C      		mov r7,__zero_reg__
+  71 0072 B1E0      		ldi r27,lo8(1)
+  72 0074 4B2E      		mov r4,r27
+  73 0076 512C      		mov r5,__zero_reg__
+  74 0078 8BE1      		ldi r24,lo8(27)
+  75 007a 90E0      		ldi r25,hi8(27)
+  76 007c 9E83      		std Y+6,r25
+  77 007e 8D83      		std Y+5,r24
+  78               	.L18:
+  79 0080 AEEF      		ldi r26,lo8(-2)
+  80 0082 2A2E      		mov r2,r26
+  81 0084 AFEF      		ldi r26,hi8(-2)
+  82 0086 3A2E      		mov r3,r26
+  83 0088 280C      		add r2,r8
+  84 008a 391C      		adc r3,r9
+  85 008c 00C0      		rjmp .L2
+  86               	.L4:
+  87 008e 1E14      		cp __zero_reg__,r14
+  88 0090 1F04      		cpc __zero_reg__,r15
+  89 0092 04F4      		brge .L3
+  90 0094 ED81      		ldd r30,Y+5
+  91 0096 FE81      		ldd r31,Y+6
+  92 0098 3197      		sbiw r30,1
+  93 009a FE83      		std Y+6,r31
+  94 009c ED83      		std Y+5,r30
+  95               	.L3:
+  96 009e FAE0      		ldi r31,lo8(10)
+  97 00a0 CF2E      		mov r12,r31
+  98 00a2 D12C      		mov r13,__zero_reg__
+  99 00a4 8D81      		ldd r24,Y+5
+ 100 00a6 9E81      		ldd r25,Y+6
+ 101 00a8 C80E      		add r12,r24
+ 102 00aa D91E      		adc r13,r25
+ 103 00ac 7C01      		movw r14,r24
+ 104               	.L2:
+ 105 00ae 80E1      		ldi r24,lo8(16)
+ 106 00b0 0E94 0000 		call get_key_rpt
+ 107 00b4 8823      		tst r24
+ 108 00b6 01F4      		brne .L4
+ 109 00b8 80E2      		ldi r24,lo8(32)
+ 110 00ba 0E94 0000 		call get_key_rpt
+ 111 00be 8823      		tst r24
+ 112 00c0 01F0      		breq .L23
+ 113               	.L7:
+ 114 00c2 90E4      		ldi r25,lo8(64)
+ 115 00c4 C916      		cp r12,r25
+ 116 00c6 D104      		cpc r13,__zero_reg__
+ 117 00c8 04F4      		brge .L6
+ 118 00ca ED81      		ldd r30,Y+5
+ 119 00cc FE81      		ldd r31,Y+6
+ 120 00ce 3196      		adiw r30,1
+ 121 00d0 FE83      		std Y+6,r31
+ 122 00d2 ED83      		std Y+5,r30
+ 123               	.L6:
+ 124 00d4 EAE0      		ldi r30,lo8(10)
+ 125 00d6 CE2E      		mov r12,r30
+ 126 00d8 D12C      		mov r13,__zero_reg__
+ 127 00da 8D81      		ldd r24,Y+5
+ 128 00dc 9E81      		ldd r25,Y+6
+ 129 00de C80E      		add r12,r24
+ 130 00e0 D91E      		adc r13,r25
+ 131 00e2 7C01      		movw r14,r24
+ 132 00e4 80E2      		ldi r24,lo8(32)
+ 133 00e6 0E94 0000 		call get_key_rpt
+ 134 00ea 8823      		tst r24
+ 135 00ec 01F4      		brne .L7
+ 136               	.L23:
+ 137 00ee 8AE0      		ldi r24,lo8(10)
+ 138 00f0 6D81      		ldd r22,Y+5
+ 139 00f2 42E0      		ldi r20,lo8(2)
+ 140 00f4 2AE0      		ldi r18,lo8(10)
+ 141 00f6 01E0      		ldi r16,lo8(1)
+ 142 00f8 0E94 0000 		call lcd_frect
+ 143 00fc 80E0      		ldi r24,lo8(0)
+ 144 00fe AC14      		cp r10,r12
+ 145 0100 BD04      		cpc r11,r13
+ 146 0102 04F4      		brge .L9
+ 147 0104 81E0      		ldi r24,lo8(1)
+ 148               	.L9:
+ 149 0106 90E0      		ldi r25,lo8(0)
+ 150 0108 EA14      		cp r14,r10
+ 151 010a FB04      		cpc r15,r11
+ 152 010c 04F4      		brge .L10
+ 153 010e 91E0      		ldi r25,lo8(1)
+ 154               	.L10:
+ 155 0110 8923      		and r24,r25
+ 156 0112 90E0      		ldi r25,lo8(0)
+ 157 0114 20E0      		ldi r18,lo8(0)
+ 158 0116 30E0      		ldi r19,hi8(0)
+ 159 0118 EDE0      		ldi r30,lo8(13)
+ 160 011a 2E16      		cp r2,r30
+ 161 011c 3104      		cpc r3,__zero_reg__
+ 162 011e 04F4      		brge .L11
+ 163 0120 21E0      		ldi r18,lo8(1)
+ 164 0122 30E0      		ldi r19,hi8(1)
+ 165               	.L11:
+ 166 0124 8223      		and r24,r18
+ 167 0126 9323      		and r25,r19
+ 168 0128 892B      		or r24,r25
+ 169 012a 01F0      		breq .L8
+ 170 012c 7094      		com r7
+ 171 012e 6194      		neg r6
+ 172 0130 7108      		sbc r7,__zero_reg__
+ 173 0132 7394      		inc r7
+ 174               	.L8:
+ 175 0134 FEE7      		ldi r31,lo8(126)
+ 176 0136 8F16      		cp r8,r31
+ 177 0138 9104      		cpc r9,__zero_reg__
+ 178 013a 04F0      		brlt .L12
+ 179 013c 7094      		com r7
+ 180 013e 6194      		neg r6
+ 181 0140 7108      		sbc r7,__zero_reg__
+ 182 0142 7394      		inc r7
+ 183               	.L12:
+ 184 0144 1214      		cp __zero_reg__,r2
+ 185 0146 1304      		cpc __zero_reg__,r3
+ 186 0148 04F0      		brlt .+2
+ 187 014a 00C0      		rjmp .L13
+ 188 014c 860C      		add r8,r6
+ 189 014e 971C      		adc r9,r7
+ 190 0150 0B81      		ldd r16,Y+3
+ 191 0152 C501      		movw r24,r10
+ 192               	.L14:
+ 193 0154 EEE3      		ldi r30,lo8(62)
+ 194 0156 AE16      		cp r10,r30
+ 195 0158 B104      		cpc r11,__zero_reg__
+ 196 015a 04F4      		brge .L16
+ 197 015c F3E0      		ldi r31,lo8(3)
+ 198 015e AF16      		cp r10,r31
+ 199 0160 B104      		cpc r11,__zero_reg__
+ 200 0162 04F4      		brge .L17
+ 201               	.L16:
+ 202 0164 5094      		com r5
+ 203 0166 4194      		neg r4
+ 204 0168 5108      		sbc r5,__zero_reg__
+ 205 016a 5394      		inc r5
+ 206               	.L17:
+ 207 016c 5201      		movw r10,r4
+ 208 016e A80E      		add r10,r24
+ 209 0170 B91E      		adc r11,r25
+ 210 0172 C401      		movw r24,r8
+ 211 0174 B501      		movw r22,r10
+ 212 0176 42E0      		ldi r20,lo8(2)
+ 213 0178 50E0      		ldi r21,hi8(2)
+ 214 017a 0E94 0000 		call lcd_fcircle
+ 215 017e 80E0      		ldi r24,lo8(0)
+ 216 0180 60E0      		ldi r22,lo8(0)
+ 217 0182 402F      		mov r20,r16
+ 218 0184 0E94 0000 		call lcd_write_number_u_at
+ 219 0188 88E7      		ldi r24,lo8(120)
+ 220 018a 90E0      		ldi r25,hi8(120)
+ 221 018c 0E94 0000 		call wait_ms
+ 222 0190 0E94 0000 		call lcd_cls
+ 223 0194 8981      		ldd r24,Y+1
+ 224 0196 9A81      		ldd r25,Y+2
+ 225 0198 892B      		or r24,r25
+ 226 019a 01F0      		breq .+2
+ 227 019c 00C0      		rjmp .L18
+ 228 019e 80E0      		ldi r24,lo8(0)
+ 229 01a0 90E0      		ldi r25,hi8(0)
+ 230               	/* epilogue start */
+ 231 01a2 2696      		adiw r28,6
+ 232 01a4 0FB6      		in __tmp_reg__,__SREG__
+ 233 01a6 F894      		cli
+ 234 01a8 DEBF      		out __SP_H__,r29
+ 235 01aa 0FBE      		out __SREG__,__tmp_reg__
+ 236 01ac CDBF      		out __SP_L__,r28
+ 237 01ae CF91      		pop r28
+ 238 01b0 DF91      		pop r29
+ 239 01b2 0F91      		pop r16
+ 240 01b4 FF90      		pop r15
+ 241 01b6 EF90      		pop r14
+ 242 01b8 DF90      		pop r13
+ 243 01ba CF90      		pop r12
+ 244 01bc BF90      		pop r11
+ 245 01be AF90      		pop r10
+ 246 01c0 9F90      		pop r9
+ 247 01c2 8F90      		pop r8
+ 248 01c4 7F90      		pop r7
+ 249 01c6 6F90      		pop r6
+ 250 01c8 5F90      		pop r5
+ 251 01ca 4F90      		pop r4
+ 252 01cc 3F90      		pop r3
+ 253 01ce 2F90      		pop r2
+ 254 01d0 0895      		ret
+ 255               	.L13:
+ 256 01d2 8B81      		ldd r24,Y+3
+ 257 01d4 9C81      		ldd r25,Y+4
+ 258 01d6 0197      		sbiw r24,1
+ 259 01d8 9C83      		std Y+4,r25
+ 260 01da 8B83      		std Y+3,r24
+ 261 01dc 892B      		or r24,r25
+ 262 01de 01F0      		breq .L15
+ 263 01e0 0B81      		ldd r16,Y+3
+ 264 01e2 8AE2      		ldi r24,lo8(42)
+ 265 01e4 90E0      		ldi r25,hi8(42)
+ 266 01e6 73E0      		ldi r23,lo8(3)
+ 267 01e8 672E      		mov r6,r23
+ 268 01ea 712C      		mov r7,__zero_reg__
+ 269 01ec 61E0      		ldi r22,lo8(1)
+ 270 01ee 462E      		mov r4,r22
+ 271 01f0 512C      		mov r5,__zero_reg__
+ 272 01f2 5AE1      		ldi r21,lo8(26)
+ 273 01f4 852E      		mov r8,r21
+ 274 01f6 912C      		mov r9,__zero_reg__
+ 275 01f8 00C0      		rjmp .L14
+ 276               	.L15:
+ 277 01fa 0E94 0000 		call lcd_cls
+ 278 01fe 82E0      		ldi r24,lo8(2)
+ 279 0200 63E0      		ldi r22,lo8(3)
+ 280 0202 40E0      		ldi r20,lo8(__c.1736)
+ 281 0204 50E0      		ldi r21,hi8(__c.1736)
+ 282 0206 20E0      		ldi r18,lo8(0)
+ 283 0208 0E94 0000 		call lcd_printp_at
+ 284 020c 88E8      		ldi r24,lo8(5000)
+ 285 020e 93E1      		ldi r25,hi8(5000)
+ 286 0210 0E94 0000 		call wait_ms
+ 287 0214 1A82      		std Y+2,__zero_reg__
+ 288 0216 1982      		std Y+1,__zero_reg__
+ 289 0218 8AE2      		ldi r24,lo8(42)
+ 290 021a 90E0      		ldi r25,hi8(42)
+ 291 021c 43E0      		ldi r20,lo8(3)
+ 292 021e 642E      		mov r6,r20
+ 293 0220 712C      		mov r7,__zero_reg__
+ 294 0222 31E0      		ldi r19,lo8(1)
+ 295 0224 432E      		mov r4,r19
+ 296 0226 512C      		mov r5,__zero_reg__
+ 297 0228 2AE1      		ldi r18,lo8(26)
+ 298 022a 822E      		mov r8,r18
+ 299 022c 912C      		mov r9,__zero_reg__
+ 300 022e 00E0      		ldi r16,lo8(0)
+ 301 0230 00C0      		rjmp .L14
+ 303               		.section	.progmem.data,"a",@progbits
+ 306               	__c.1736:
+ 307 0000 5645 524C 		.string	"VERLOREN!\r\n"
+ 307      4F52 454E 
+ 307      210D 0A00 
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+     /tmp/cct6fJWY.s:2      *ABS*:0000003f __SREG__
+     /tmp/cct6fJWY.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cct6fJWY.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cct6fJWY.s:5      *ABS*:00000034 __CCP__
+     /tmp/cct6fJWY.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cct6fJWY.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cct6fJWY.s:11     .text:00000000 main
+     /tmp/cct6fJWY.s:306    .progmem.data:00000000 __c.1736
+
+UNDEFINED SYMBOLS
+LCD_Init
+USART_Init
+TIMER0_Init
+lcd_cls
+get_key_rpt
+lcd_frect
+lcd_fcircle
+lcd_write_number_u_at
+wait_ms
+lcd_printp_at

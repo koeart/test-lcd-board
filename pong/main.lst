@@ -1,0 +1,152 @@
+   1               		.file	"main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.global	main
+  11               	main:
+  12 0000 CF93      		push r28
+  13 0002 DF93      		push r29
+  14               	/* prologue: function */
+  15               	/* frame size = 0 */
+  16 0004 82B1      		in r24,34-32
+  17 0006 806F      		ori r24,lo8(-16)
+  18 0008 82B9      		out 34-32,r24
+  19 000a 3B9A      		sbi 39-32,3
+  20 000c 439A      		sbi 40-32,3
+  21 000e 87B1      		in r24,39-32
+  22 0010 8760      		ori r24,lo8(7)
+  23 0012 87B9      		out 39-32,r24
+  24 0014 8AB1      		in r24,42-32
+  25 0016 806C      		ori r24,lo8(-64)
+  26 0018 8AB9      		out 42-32,r24
+  27 001a 0E94 0000 		call LCD_Init
+  28 001e 0E94 0000 		call USART_Init
+  29 0022 0E94 0000 		call TIMER0_Init
+  30               	/* #APP */
+  31               	 ;  39 "main.c" 1
+  32 0026 7894      		sei
+  33               	 ;  0 "" 2
+  34               	/* #NOAPP */
+  35 0028 0E94 0000 		call lcd_cls
+  36 002c 80E0      		ldi r24,lo8(__c.1615)
+  37 002e 90E0      		ldi r25,hi8(__c.1615)
+  38 0030 60E0      		ldi r22,lo8(0)
+  39 0032 0E94 0000 		call lcd_printp
+  40 0036 88EE      		ldi r24,lo8(1000)
+  41 0038 93E0      		ldi r25,hi8(1000)
+  42 003a 0E94 0000 		call wait_ms
+  43 003e 0E94 0000 		call lcd_cls
+  44 0042 C1E0      		ldi r28,lo8(1)
+  45 0044 D0E0      		ldi r29,hi8(1)
+  46               	.L10:
+  47 0046 83E0      		ldi r24,lo8(3)
+  48 0048 60E0      		ldi r22,lo8(0)
+  49 004a 40E0      		ldi r20,lo8(__c.1619)
+  50 004c 50E0      		ldi r21,hi8(__c.1619)
+  51 004e 20E0      		ldi r18,lo8(0)
+  52 0050 0E94 0000 		call lcd_printp_at
+  53 0054 83E0      		ldi r24,lo8(3)
+  54 0056 62E0      		ldi r22,lo8(2)
+  55 0058 40E0      		ldi r20,lo8(__c.1621)
+  56 005a 50E0      		ldi r21,hi8(__c.1621)
+  57 005c 20E0      		ldi r18,lo8(0)
+  58 005e 0E94 0000 		call lcd_printp_at
+  59 0062 83E0      		ldi r24,lo8(3)
+  60 0064 64E0      		ldi r22,lo8(4)
+  61 0066 40E0      		ldi r20,lo8(__c.1623)
+  62 0068 50E0      		ldi r21,hi8(__c.1623)
+  63 006a 20E0      		ldi r18,lo8(0)
+  64 006c 0E94 0000 		call lcd_printp_at
+  65 0070 8C2F      		mov r24,r28
+  66 0072 0E94 0000 		call lcd_write_number_u
+  67 0076 84E6      		ldi r24,lo8(100)
+  68 0078 90E0      		ldi r25,hi8(100)
+  69 007a 0E94 0000 		call wait_ms
+  70 007e 80E2      		ldi r24,lo8(32)
+  71 0080 0E94 0000 		call get_key_press
+  72 0084 8823      		tst r24
+  73 0086 01F0      		breq .L3
+  74 0088 C2E0      		ldi r28,lo8(2)
+  75 008a D0E0      		ldi r29,hi8(2)
+  76               	.L3:
+  77 008c 80E1      		ldi r24,lo8(16)
+  78 008e 0E94 0000 		call get_key_press
+  79 0092 8823      		tst r24
+  80 0094 01F0      		breq .L4
+  81 0096 C1E0      		ldi r28,lo8(1)
+  82 0098 D0E0      		ldi r29,hi8(1)
+  83               	.L4:
+  84 009a 80E8      		ldi r24,lo8(-128)
+  85 009c 0E94 0000 		call get_key_press
+  86 00a0 8823      		tst r24
+  87 00a2 01F0      		breq .L10
+  88 00a4 C130      		cpi r28,1
+  89 00a6 D105      		cpc r29,__zero_reg__
+  90 00a8 01F0      		breq .L5
+  91 00aa C230      		cpi r28,2
+  92 00ac D105      		cpc r29,__zero_reg__
+  93 00ae 01F4      		brne .L10
+  94 00b0 00C0      		rjmp .L11
+  95               	.L5:
+  96 00b2 0E94 0000 		call lcd_cls
+  97 00b6 0E94 0000 		call pong
+  98 00ba 00C0      		rjmp .L10
+  99               	.L11:
+ 100 00bc 0E94 0000 		call lcd_cls
+ 101 00c0 0E94 0000 		call tetris
+ 102 00c4 00C0      		rjmp .L10
+ 104               	.global	debug
+ 105               		.data
+ 108               	debug:
+ 109 0000 0100      		.word	1
+ 110               		.section	.progmem.data,"a",@progbits
+ 113               	__c.1623:
+ 114 0000 4175 7377 		.string	"Auswahl: "
+ 114      6168 6C3A 
+ 114      2000 
+ 117               	__c.1621:
+ 118 000a 323A 2054 		.string	"2: Tetris\r\n"
+ 118      6574 7269 
+ 118      730D 0A00 
+ 121               	__c.1619:
+ 122 0016 313A 2050 		.string	"1: PONG\r\n"
+ 122      4F4E 470D 
+ 122      0A00 
+ 125               	__c.1615:
+ 126 0020 6865 6C6C 		.string	"hello world!\r\n"
+ 126      6F20 776F 
+ 126      726C 6421 
+ 126      0D0A 00
+ 127               	.global __do_copy_data
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+     /tmp/ccjgESXw.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccjgESXw.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccjgESXw.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccjgESXw.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccjgESXw.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccjgESXw.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccjgESXw.s:11     .text:00000000 main
+     /tmp/ccjgESXw.s:125    .progmem.data:00000020 __c.1615
+     /tmp/ccjgESXw.s:121    .progmem.data:00000016 __c.1619
+     /tmp/ccjgESXw.s:117    .progmem.data:0000000a __c.1621
+     /tmp/ccjgESXw.s:113    .progmem.data:00000000 __c.1623
+     /tmp/ccjgESXw.s:108    .data:00000000 debug
+
+UNDEFINED SYMBOLS
+LCD_Init
+USART_Init
+TIMER0_Init
+lcd_cls
+lcd_printp
+wait_ms
+lcd_printp_at
+lcd_write_number_u
+get_key_press
+pong
+tetris
+__do_copy_data

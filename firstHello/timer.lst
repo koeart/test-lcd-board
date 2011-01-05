@@ -1,0 +1,312 @@
+   1               		.file	"timer.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.global	__vector_16
+  11               	__vector_16:
+  12 0000 1F92      		push __zero_reg__
+  13 0002 0F92      		push r0
+  14 0004 0FB6      		in r0,__SREG__
+  15 0006 0F92      		push r0
+  16 0008 1124      		clr __zero_reg__
+  17 000a 2F93      		push r18
+  18 000c 3F93      		push r19
+  19 000e 8F93      		push r24
+  20 0010 9F93      		push r25
+  21               	/* prologue: Signal */
+  22               	/* frame size = 0 */
+  23 0012 20B1      		in r18,32-32
+  24 0014 3091 0000 		lds r19,key_state
+  25 0018 2095      		com r18
+  26 001a 2327      		eor r18,r19
+  27 001c 9091 0000 		lds r25,ct0.1244
+  28 0020 9223      		and r25,r18
+  29 0022 9095      		com r25
+  30 0024 9093 0000 		sts ct0.1244,r25
+  31 0028 8091 0000 		lds r24,ct1.1245
+  32 002c 8223      		and r24,r18
+  33 002e 8927      		eor r24,r25
+  34 0030 8093 0000 		sts ct1.1245,r24
+  35 0034 9223      		and r25,r18
+  36 0036 9823      		and r25,r24
+  37 0038 292F      		mov r18,r25
+  38 003a 2327      		eor r18,r19
+  39 003c 2093 0000 		sts key_state,r18
+  40 0040 9223      		and r25,r18
+  41 0042 8091 0000 		lds r24,key_press
+  42 0046 892B      		or r24,r25
+  43 0048 8093 0000 		sts key_press,r24
+  44 004c 207F      		andi r18,lo8(-16)
+  45 004e 01F4      		brne .L2
+  46 0050 81E3      		ldi r24,lo8(49)
+  47 0052 8093 0000 		sts rpt.1246,r24
+  48               	.L3:
+  49 0056 8091 0000 		lds r24,timer
+  50 005a 9091 0000 		lds r25,(timer)+1
+  51 005e 892B      		or r24,r25
+  52 0060 01F0      		breq .L4
+  53 0062 8091 0000 		lds r24,timer
+  54 0066 9091 0000 		lds r25,(timer)+1
+  55 006a 0197      		sbiw r24,1
+  56 006c 9093 0000 		sts (timer)+1,r25
+  57 0070 8093 0000 		sts timer,r24
+  58               	.L4:
+  59 0074 8091 0000 		lds r24,abo_timer
+  60 0078 9091 0000 		lds r25,(abo_timer)+1
+  61 007c 892B      		or r24,r25
+  62 007e 01F0      		breq .L6
+  63 0080 8091 0000 		lds r24,abo_timer
+  64 0084 9091 0000 		lds r25,(abo_timer)+1
+  65 0088 0197      		sbiw r24,1
+  66 008a 9093 0000 		sts (abo_timer)+1,r25
+  67 008e 8093 0000 		sts abo_timer,r24
+  68               	.L6:
+  69               	/* epilogue start */
+  70 0092 9F91      		pop r25
+  71 0094 8F91      		pop r24
+  72 0096 3F91      		pop r19
+  73 0098 2F91      		pop r18
+  74 009a 0F90      		pop r0
+  75 009c 0FBE      		out __SREG__,r0
+  76 009e 0F90      		pop r0
+  77 00a0 1F90      		pop __zero_reg__
+  78 00a2 1895      		reti
+  79               	.L2:
+  80 00a4 8091 0000 		lds r24,rpt.1246
+  81 00a8 8150      		subi r24,lo8(-(-1))
+  82 00aa 8093 0000 		sts rpt.1246,r24
+  83 00ae 8823      		tst r24
+  84 00b0 01F4      		brne .L3
+  85 00b2 8AE0      		ldi r24,lo8(10)
+  86 00b4 8093 0000 		sts rpt.1246,r24
+  87 00b8 8091 0000 		lds r24,key_rpt
+  88 00bc 822B      		or r24,r18
+  89 00be 8093 0000 		sts key_rpt,r24
+  90 00c2 00C0      		rjmp .L3
+  92               	.global	TIMER0_Init
+  94               	TIMER0_Init:
+  95               	/* prologue: function */
+  96               	/* frame size = 0 */
+  97 00c4 1092 0000 		sts (timer)+1,__zero_reg__
+  98 00c8 1092 0000 		sts timer,__zero_reg__
+  99 00cc 82E0      		ldi r24,lo8(2)
+ 100 00ce 84BD      		out 68-32,r24
+ 101 00d0 85E0      		ldi r24,lo8(5)
+ 102 00d2 85BD      		out 69-32,r24
+ 103 00d4 83EC      		ldi r24,lo8(-61)
+ 104 00d6 87BD      		out 71-32,r24
+ 105 00d8 EEE6      		ldi r30,lo8(110)
+ 106 00da F0E0      		ldi r31,hi8(110)
+ 107 00dc 8081      		ld r24,Z
+ 108 00de 8260      		ori r24,lo8(2)
+ 109 00e0 8083      		st Z,r24
+ 110               	/* epilogue start */
+ 111 00e2 0895      		ret
+ 113               	.global	get_key_press
+ 115               	get_key_press:
+ 116               	/* prologue: function */
+ 117               	/* frame size = 0 */
+ 118 00e4 2FB7      		in r18,__SREG__
+ 119               	/* #APP */
+ 120               	 ;  101 "timer.c" 1
+ 121 00e6 F894      		cli
+ 122               	 ;  0 "" 2
+ 123               	/* #NOAPP */
+ 124 00e8 9091 0000 		lds r25,key_press
+ 125 00ec 8923      		and r24,r25
+ 126 00ee 9827      		eor r25,r24
+ 127 00f0 9093 0000 		sts key_press,r25
+ 128 00f4 2FBF      		out __SREG__,r18
+ 129               	/* epilogue start */
+ 130 00f6 0895      		ret
+ 132               	.global	get_key_rpt
+ 134               	get_key_rpt:
+ 135               	/* prologue: function */
+ 136               	/* frame size = 0 */
+ 137 00f8 2FB7      		in r18,__SREG__
+ 138               	/* #APP */
+ 139               	 ;  119 "timer.c" 1
+ 140 00fa F894      		cli
+ 141               	 ;  0 "" 2
+ 142               	/* #NOAPP */
+ 143 00fc 9091 0000 		lds r25,key_rpt
+ 144 0100 8923      		and r24,r25
+ 145 0102 9827      		eor r25,r24
+ 146 0104 9093 0000 		sts key_rpt,r25
+ 147 0108 2FBF      		out __SREG__,r18
+ 148               	/* epilogue start */
+ 149 010a 0895      		ret
+ 151               	.global	get_key_short
+ 153               	get_key_short:
+ 154               	/* prologue: function */
+ 155               	/* frame size = 0 */
+ 156 010c 4FB7      		in r20,__SREG__
+ 157               	/* #APP */
+ 158               	 ;  138 "timer.c" 1
+ 159 010e F894      		cli
+ 160               	 ;  0 "" 2
+ 161               	/* #NOAPP */
+ 162 0110 3FB7      		in r19,__SREG__
+ 163               	/* #APP */
+ 164               	 ;  101 "timer.c" 1
+ 165 0112 F894      		cli
+ 166               	 ;  0 "" 2
+ 167               	/* #NOAPP */
+ 168 0114 2091 0000 		lds r18,key_press
+ 169 0118 9091 0000 		lds r25,key_state
+ 170 011c 9095      		com r25
+ 171 011e 8923      		and r24,r25
+ 172 0120 8223      		and r24,r18
+ 173 0122 2827      		eor r18,r24
+ 174 0124 2093 0000 		sts key_press,r18
+ 175 0128 3FBF      		out __SREG__,r19
+ 176 012a 4FBF      		out __SREG__,r20
+ 177               	/* epilogue start */
+ 178 012c 0895      		ret
+ 180               	.global	get_key_long
+ 182               	get_key_long:
+ 183               	/* prologue: function */
+ 184               	/* frame size = 0 */
+ 185 012e 2FB7      		in r18,__SREG__
+ 186               	/* #APP */
+ 187               	 ;  119 "timer.c" 1
+ 188 0130 F894      		cli
+ 189               	 ;  0 "" 2
+ 190               	/* #NOAPP */
+ 191 0132 9091 0000 		lds r25,key_rpt
+ 192 0136 8923      		and r24,r25
+ 193 0138 9827      		eor r25,r24
+ 194 013a 9093 0000 		sts key_rpt,r25
+ 195 013e 2FBF      		out __SREG__,r18
+ 196 0140 2FB7      		in r18,__SREG__
+ 197               	/* #APP */
+ 198               	 ;  101 "timer.c" 1
+ 199 0142 F894      		cli
+ 200               	 ;  0 "" 2
+ 201               	/* #NOAPP */
+ 202 0144 9091 0000 		lds r25,key_press
+ 203 0148 8923      		and r24,r25
+ 204 014a 9827      		eor r25,r24
+ 205 014c 9093 0000 		sts key_press,r25
+ 206 0150 2FBF      		out __SREG__,r18
+ 207               	/* epilogue start */
+ 208 0152 0895      		ret
+ 210               	.global	get_key_long2
+ 212               	get_key_long2:
+ 213               	/* prologue: function */
+ 214               	/* frame size = 0 */
+ 215 0154 2091 0000 		lds r18,key_press
+ 216 0158 3FB7      		in r19,__SREG__
+ 217               	/* #APP */
+ 218               	 ;  119 "timer.c" 1
+ 219 015a F894      		cli
+ 220               	 ;  0 "" 2
+ 221               	/* #NOAPP */
+ 222 015c 9091 0000 		lds r25,key_rpt
+ 223 0160 8227      		eor r24,r18
+ 224 0162 8923      		and r24,r25
+ 225 0164 9827      		eor r25,r24
+ 226 0166 9093 0000 		sts key_rpt,r25
+ 227 016a 3FBF      		out __SREG__,r19
+ 228 016c 9FB7      		in r25,__SREG__
+ 229               	/* #APP */
+ 230               	 ;  101 "timer.c" 1
+ 231 016e F894      		cli
+ 232               	 ;  0 "" 2
+ 233               	/* #NOAPP */
+ 234 0170 8223      		and r24,r18
+ 235 0172 2827      		eor r18,r24
+ 236 0174 2093 0000 		sts key_press,r18
+ 237 0178 9FBF      		out __SREG__,r25
+ 238               	/* epilogue start */
+ 239 017a 0895      		ret
+ 241               	.global	get_key_long_rpt
+ 243               	get_key_long_rpt:
+ 244               	/* prologue: function */
+ 245               	/* frame size = 0 */
+ 246 017c 3FB7      		in r19,__SREG__
+ 247               	/* #APP */
+ 248               	 ;  119 "timer.c" 1
+ 249 017e F894      		cli
+ 250               	 ;  0 "" 2
+ 251               	/* #NOAPP */
+ 252 0180 2091 0000 		lds r18,key_rpt
+ 253 0184 9091 0000 		lds r25,key_press
+ 254 0188 9095      		com r25
+ 255 018a 8927      		eor r24,r25
+ 256 018c 8223      		and r24,r18
+ 257 018e 2827      		eor r18,r24
+ 258 0190 2093 0000 		sts key_rpt,r18
+ 259 0194 3FBF      		out __SREG__,r19
+ 260               	/* epilogue start */
+ 261 0196 0895      		ret
+ 263               	.global	icrval
+ 264               		.data
+ 267               	icrval:
+ 268 0000 6A18      		.word	6250
+ 269               	.global	minocr_a
+ 272               	minocr_a:
+ 273 0002 3801      		.word	312
+ 274               	.global	maxocr_a
+ 277               	maxocr_a:
+ 278 0004 7102      		.word	625
+ 279               	.global	minocr_b
+ 282               	minocr_b:
+ 283 0006 3801      		.word	312
+ 284               	.global	maxocr_b
+ 287               	maxocr_b:
+ 288 0008 7102      		.word	625
+ 289               	.global	key_state
+ 290               	.global	key_state
+ 291               		.section .bss
+ 294               	key_state:
+ 295 0000 00        		.skip 1,0
+ 296               	.global	key_press
+ 297               	.global	key_press
+ 300               	key_press:
+ 301 0001 00        		.skip 1,0
+ 302               		.lcomm rpt.1246,1
+ 303               		.lcomm ct1.1245,1
+ 304               		.lcomm ct0.1244,1
+ 305               		.comm timer,2,1
+ 306               		.comm abo_timer,2,1
+ 307               		.comm key_rpt,1,1
+ 308               	.global __do_copy_data
+ 309               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 timer.c
+     /tmp/ccsQtn3H.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccsQtn3H.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccsQtn3H.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccsQtn3H.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccsQtn3H.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccsQtn3H.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccsQtn3H.s:11     .text:00000000 __vector_16
+     /tmp/ccsQtn3H.s:294    .bss:00000000 key_state
+     /tmp/ccsQtn3H.s:303    .bss:00000004 ct0.1244
+     /tmp/ccsQtn3H.s:302    .bss:00000003 ct1.1245
+     /tmp/ccsQtn3H.s:300    .bss:00000001 key_press
+                             .bss:00000002 rpt.1246
+                            *COM*:00000002 timer
+                            *COM*:00000002 abo_timer
+                            *COM*:00000001 key_rpt
+     /tmp/ccsQtn3H.s:94     .text:000000c4 TIMER0_Init
+     /tmp/ccsQtn3H.s:115    .text:000000e4 get_key_press
+     /tmp/ccsQtn3H.s:134    .text:000000f8 get_key_rpt
+     /tmp/ccsQtn3H.s:153    .text:0000010c get_key_short
+     /tmp/ccsQtn3H.s:182    .text:0000012e get_key_long
+     /tmp/ccsQtn3H.s:212    .text:00000154 get_key_long2
+     /tmp/ccsQtn3H.s:243    .text:0000017c get_key_long_rpt
+     /tmp/ccsQtn3H.s:267    .data:00000000 icrval
+     /tmp/ccsQtn3H.s:272    .data:00000002 minocr_a
+     /tmp/ccsQtn3H.s:277    .data:00000004 maxocr_a
+     /tmp/ccsQtn3H.s:282    .data:00000006 minocr_b
+     /tmp/ccsQtn3H.s:287    .data:00000008 maxocr_b
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
