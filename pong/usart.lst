@@ -259,41 +259,39 @@
  291               		.lcomm rxbuf,64
  292               		.lcomm rxhead,2
  293               		.lcomm rxtail,2
- 294               		.comm debug,2,1
- 295               		.comm buffer,30,1
- 296               		.comm txd_buffer,60,1
- 297               		.comm rxd_buffer,180,1
- 298               		.comm rx_byte,1,1
- 299               	.global __do_copy_data
- 300               	.global __do_clear_bss
+ 294               		.comm buffer,30,1
+ 295               		.comm txd_buffer,60,1
+ 296               		.comm rxd_buffer,180,1
+ 297               		.comm rx_byte,1,1
+ 298               	.global __do_copy_data
+ 299               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 usart.c
-     /tmp/ccDDxwxw.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccDDxwxw.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccDDxwxw.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccDDxwxw.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccDDxwxw.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccDDxwxw.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccDDxwxw.s:11     .text:00000000 uart_getc_nb
-     /tmp/ccDDxwxw.s:291    .bss:0000004a rxhead
-     /tmp/ccDDxwxw.s:292    .bss:0000004c rxtail
+     /tmp/ccUMKuQG.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccUMKuQG.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccUMKuQG.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccUMKuQG.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccUMKuQG.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccUMKuQG.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccUMKuQG.s:11     .text:00000000 uart_getc_nb
+     /tmp/ccUMKuQG.s:291    .bss:0000004a rxhead
+     /tmp/ccUMKuQG.s:292    .bss:0000004c rxtail
                              .bss:0000000a rxbuf
-     /tmp/ccDDxwxw.s:51     .text:0000005c __vector_20
-     /tmp/ccDDxwxw.s:115    .text:000000e8 USART_Init
-     /tmp/ccDDxwxw.s:155    .text:0000014c USART_DisableTXD
-     /tmp/ccDDxwxw.s:170    .text:0000015c USART_EnableTXD
-     /tmp/ccDDxwxw.s:185    .text:0000016c USART_putc
-     /tmp/ccDDxwxw.s:199    .text:0000017c USART_puts
-     /tmp/ccDDxwxw.s:219    .text:00000196 USART_puts_p
-     /tmp/ccDDxwxw.s:246    .data:00000000 txd_complete
-     /tmp/ccDDxwxw.s:253    .bss:00000000 rxd_buffer_locked
-     /tmp/ccDDxwxw.s:259    .bss:00000001 ReceivedBytes
-     /tmp/ccDDxwxw.s:265    .bss:00000002 pRxData
-     /tmp/ccDDxwxw.s:271    .bss:00000004 RxDataLen
-     /tmp/ccDDxwxw.s:277    .bss:00000005 stat_crc_error
-     /tmp/ccDDxwxw.s:283    .bss:00000007 stat_overflow_error
-     /tmp/ccDDxwxw.s:289    .bss:00000009 rxFlag
-                            *COM*:00000002 debug
+     /tmp/ccUMKuQG.s:51     .text:0000005c __vector_20
+     /tmp/ccUMKuQG.s:115    .text:000000e8 USART_Init
+     /tmp/ccUMKuQG.s:155    .text:0000014c USART_DisableTXD
+     /tmp/ccUMKuQG.s:170    .text:0000015c USART_EnableTXD
+     /tmp/ccUMKuQG.s:185    .text:0000016c USART_putc
+     /tmp/ccUMKuQG.s:199    .text:0000017c USART_puts
+     /tmp/ccUMKuQG.s:219    .text:00000196 USART_puts_p
+     /tmp/ccUMKuQG.s:246    .data:00000000 txd_complete
+     /tmp/ccUMKuQG.s:253    .bss:00000000 rxd_buffer_locked
+     /tmp/ccUMKuQG.s:259    .bss:00000001 ReceivedBytes
+     /tmp/ccUMKuQG.s:265    .bss:00000002 pRxData
+     /tmp/ccUMKuQG.s:271    .bss:00000004 RxDataLen
+     /tmp/ccUMKuQG.s:277    .bss:00000005 stat_crc_error
+     /tmp/ccUMKuQG.s:283    .bss:00000007 stat_overflow_error
+     /tmp/ccUMKuQG.s:289    .bss:00000009 rxFlag
                             *COM*:0000001e buffer
                             *COM*:0000003c txd_buffer
                             *COM*:000000b4 rxd_buffer

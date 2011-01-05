@@ -778,12 +778,12 @@
  780 02ff 00        		.byte	0
 DEFINED SYMBOLS
                             *ABS*:00000000 font8x6.c
-     /tmp/ccc1KSpO.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccc1KSpO.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccc1KSpO.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccc1KSpO.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccc1KSpO.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccc1KSpO.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccc1KSpO.s:12     .progmem.data:00000000 font8x6
+     /tmp/cch4IX5Y.s:2      *ABS*:0000003f __SREG__
+     /tmp/cch4IX5Y.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cch4IX5Y.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cch4IX5Y.s:5      *ABS*:00000034 __CCP__
+     /tmp/cch4IX5Y.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cch4IX5Y.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cch4IX5Y.s:12     .progmem.data:00000000 font8x6
 
 NO UNDEFINED SYMBOLS

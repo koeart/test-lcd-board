@@ -1,6 +1,12 @@
 #ifndef _MAIN_H
 #define _MAIN_H
 
-int debug;
+
+enum displ_orientation {
+	unten, rechts, oben, links
+	};
+
+extern enum displ_orientation ausrichtung;
+	
 
 #endif

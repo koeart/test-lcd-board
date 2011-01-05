@@ -9,11 +9,12 @@
 #include "main.h"
 #include "lcd.h"
 
-
 #define DISP_W 128
 #define DISP_H 64
 
 #define DISP_BUFFER ((DISP_H * DISP_W) / 8)
+
+
 
 volatile uint8_t display_buffer[DISP_BUFFER];	// Display-Puffer, weil nicht zurückgelesen werden kann
 volatile uint16_t display_buffer_pointer;			// Pointer auf das aktuell übertragene Byte
@@ -387,9 +388,9 @@ void lcd_plot (uint8_t xpos, uint8_t ypos, uint8_t mode)
 {
 	uint16_t adress;
 	uint8_t mask;
-	
-	if ((xpos < DISP_W) && (ypos < DISP_H))
-	{
+	if(ausrichtung == unten) {
+		if ((xpos < DISP_W) && (ypos < DISP_H))
+		{
 		adress = (ypos / 8) * DISP_W + xpos;		// adress = 0/8 * 128 + 0   = 0
 		mask = 1 << (ypos & 0x07);					// mask = 1<<0 = 1
 		
@@ -409,6 +410,7 @@ void lcd_plot (uint8_t xpos, uint8_t ypos, uint8_t mode)
 		}
 		
 		set_adress (adress, display_buffer[adress]);
+		}
 	}
 }
 

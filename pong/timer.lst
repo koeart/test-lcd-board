@@ -23,14 +23,14 @@
   24 0016 20B1      		in r18,32-32
   25 0018 2095      		com r18
   26 001a 2327      		eor r18,r19
-  27 001c 9091 0000 		lds r25,ct0.1245
+  27 001c 9091 0000 		lds r25,ct0.1250
   28 0020 9223      		and r25,r18
   29 0022 9095      		com r25
-  30 0024 9093 0000 		sts ct0.1245,r25
-  31 0028 8091 0000 		lds r24,ct1.1246
+  30 0024 9093 0000 		sts ct0.1250,r25
+  31 0028 8091 0000 		lds r24,ct1.1251
   32 002c 8223      		and r24,r18
   33 002e 8927      		eor r24,r25
-  34 0030 8093 0000 		sts ct1.1246,r24
+  34 0030 8093 0000 		sts ct1.1251,r24
   35 0034 9223      		and r25,r18
   36 0036 9823      		and r25,r24
   37 0038 292F      		mov r18,r25
@@ -44,15 +44,15 @@
   45 004e 807F      		andi r24,lo8(-16)
   46 0050 01F4      		brne .L2
   47 0052 82E3      		ldi r24,lo8(50)
-  48 0054 8093 0000 		sts rpt.1247,r24
+  48 0054 8093 0000 		sts rpt.1252,r24
   49               	.L2:
-  50 0058 8091 0000 		lds r24,rpt.1247
+  50 0058 8091 0000 		lds r24,rpt.1252
   51 005c 8150      		subi r24,lo8(-(-1))
-  52 005e 8093 0000 		sts rpt.1247,r24
+  52 005e 8093 0000 		sts rpt.1252,r24
   53 0062 8823      		tst r24
   54 0064 01F4      		brne .L3
   55 0066 8AE0      		ldi r24,lo8(10)
-  56 0068 8093 0000 		sts rpt.1247,r24
+  56 0068 8093 0000 		sts rpt.1252,r24
   57 006c 207F      		andi r18,lo8(-16)
   58 006e 8091 0000 		lds r24,key_rpt
   59 0072 822B      		or r24,r18
@@ -270,45 +270,43 @@
  298               	.global	key_press
  301               	key_press:
  302 0001 00        		.skip 1,0
- 303               		.lcomm rpt.1247,1
- 304               		.lcomm ct1.1246,1
- 305               		.lcomm ct0.1245,1
- 306               		.comm debug,2,1
- 307               		.comm timer,2,1
- 308               		.comm abo_timer,2,1
- 309               		.comm key_rpt,1,1
- 310               	.global __do_copy_data
- 311               	.global __do_clear_bss
+ 303               		.lcomm rpt.1252,1
+ 304               		.lcomm ct1.1251,1
+ 305               		.lcomm ct0.1250,1
+ 306               		.comm timer,2,1
+ 307               		.comm abo_timer,2,1
+ 308               		.comm key_rpt,1,1
+ 309               	.global __do_copy_data
+ 310               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 timer.c
-     /tmp/ccFMmiy1.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccFMmiy1.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccFMmiy1.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccFMmiy1.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccFMmiy1.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccFMmiy1.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccFMmiy1.s:11     .text:00000000 __vector_16
-     /tmp/ccFMmiy1.s:295    .bss:00000000 key_state
-     /tmp/ccFMmiy1.s:304    .bss:00000004 ct0.1245
-     /tmp/ccFMmiy1.s:303    .bss:00000003 ct1.1246
-     /tmp/ccFMmiy1.s:301    .bss:00000001 key_press
-                             .bss:00000002 rpt.1247
+     /tmp/cc34qwfa.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc34qwfa.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc34qwfa.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc34qwfa.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc34qwfa.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc34qwfa.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc34qwfa.s:11     .text:00000000 __vector_16
+     /tmp/cc34qwfa.s:295    .bss:00000000 key_state
+     /tmp/cc34qwfa.s:304    .bss:00000004 ct0.1250
+     /tmp/cc34qwfa.s:303    .bss:00000003 ct1.1251
+     /tmp/cc34qwfa.s:301    .bss:00000001 key_press
+                             .bss:00000002 rpt.1252
                             *COM*:00000001 key_rpt
                             *COM*:00000002 timer
                             *COM*:00000002 abo_timer
-     /tmp/ccFMmiy1.s:95     .text:000000c6 TIMER0_Init
-     /tmp/ccFMmiy1.s:116    .text:000000e6 get_key_press
-     /tmp/ccFMmiy1.s:135    .text:000000fa get_key_rpt
-     /tmp/ccFMmiy1.s:154    .text:0000010e get_key_short
-     /tmp/ccFMmiy1.s:183    .text:00000130 get_key_long
-     /tmp/ccFMmiy1.s:213    .text:00000156 get_key_long2
-     /tmp/ccFMmiy1.s:244    .text:0000017e get_key_long_rpt
-     /tmp/ccFMmiy1.s:268    .data:00000000 icrval
-     /tmp/ccFMmiy1.s:273    .data:00000002 minocr_a
-     /tmp/ccFMmiy1.s:278    .data:00000004 maxocr_a
-     /tmp/ccFMmiy1.s:283    .data:00000006 minocr_b
-     /tmp/ccFMmiy1.s:288    .data:00000008 maxocr_b
-                            *COM*:00000002 debug
+     /tmp/cc34qwfa.s:95     .text:000000c6 TIMER0_Init
+     /tmp/cc34qwfa.s:116    .text:000000e6 get_key_press
+     /tmp/cc34qwfa.s:135    .text:000000fa get_key_rpt
+     /tmp/cc34qwfa.s:154    .text:0000010e get_key_short
+     /tmp/cc34qwfa.s:183    .text:00000130 get_key_long
+     /tmp/cc34qwfa.s:213    .text:00000156 get_key_long2
+     /tmp/cc34qwfa.s:244    .text:0000017e get_key_long_rpt
+     /tmp/cc34qwfa.s:268    .data:00000000 icrval
+     /tmp/cc34qwfa.s:273    .data:00000002 minocr_a
+     /tmp/cc34qwfa.s:278    .data:00000004 maxocr_a
+     /tmp/cc34qwfa.s:283    .data:00000006 minocr_b
+     /tmp/cc34qwfa.s:288    .data:00000008 maxocr_b
 
 UNDEFINED SYMBOLS
 __do_copy_data

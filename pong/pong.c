@@ -11,6 +11,7 @@
 #include "timer.h"
 #include "pong.h"
 
+extern int debug;
 
 void pong (void) {
 	

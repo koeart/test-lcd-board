@@ -31,6 +31,8 @@ void lcd_printpns (const char *text, uint8_t mode);
 void lcd_printpns_at (uint8_t x, uint8_t y, const char *text, uint8_t mode);
 void lcd_cls (void);
 
+void wait_ms(uint16_t time);
+
 void print_display (uint8_t *text);
 void print_display_at (uint8_t x, uint8_t y, uint8_t *text);
 

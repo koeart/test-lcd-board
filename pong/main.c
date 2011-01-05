@@ -13,12 +13,18 @@
 #include "pong.h"
 #include "tetris.h"
 
-debug = 0; //DEBUGING INFORMATIONEN
+int debug = 0; //DEBUGING INFORMATIONEN -> enum
 
+enum displ_orientation ausrichtung;
+	
 void wait_for_ok(void);
 
 int main (void)
 {
+
+	ausrichtung = unten;
+	
+	
 	// enable pull ups for the 4 keys
 	PORTA |= (1<<PORTA4)|(1<<PORTA5)|(1<<PORTA6)|(1<<PORTA7);
 
@@ -46,11 +52,15 @@ int auswahl;
 auswahl = 1;
 	while(1)
 	{
+	
+//lcd_write_number_u(ausrichtung);
+//wait_ms(5000);
+	
 		lcd_printp_at(3,0,PSTR("1: PONG\r\n"),0);
 		lcd_printp_at(3,2,PSTR("2: Tetris\r\n"),0);
 		lcd_printp_at(3,4,PSTR("Auswahl: "),0);
 		lcd_write_number_u(auswahl);
-		wait_ms(100);
+		//wait_ms(100);
 		if(get_key_press(1 << KEY_PLUS)) {
 			if (auswahl < 2) auswahl++;
 			}
