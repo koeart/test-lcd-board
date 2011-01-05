@@ -412,6 +412,30 @@ void lcd_plot (uint8_t xpos, uint8_t ypos, uint8_t mode)
 		set_adress (adress, display_buffer[adress]);
 		}
 	}
+	if(ausrichtung == rechts) {
+		if ((xpos < DISP_W) && (ypos < DISP_H))
+		{
+		adress = (ypos / 8) * DISP_W + xpos;		// adress = 0/8 * 128 + 0   = 0
+		mask = 1 << (ypos & 0x07);					// mask = 1<<0 = 1
+		
+		adress &= DISP_BUFFER - 1;
+		
+		switch (mode)
+		{
+			case 0:
+				display_buffer[adress] &= ~mask;
+				break;
+			case 1:
+				display_buffer[adress] |= mask;
+				break;
+			case 2:
+				display_buffer[adress] ^= mask;
+				break;
+		}
+		
+		set_adress (adress, display_buffer[adress]);
+		}
+	}
 }
 
 
