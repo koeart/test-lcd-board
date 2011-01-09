@@ -15,6 +15,8 @@ extern int debug;
 
 void pong (void) {
 	
+ausrichtung = unten;
+	
 int16_t xcord = 5;
 int16_t ycord = 0;
 int16_t number = 23;
@@ -22,6 +24,7 @@ int16_t number = 23;
 /* Koordinatensystem */
 
 int16_t radius = 5;
+
 int16_t xmin = 0;
 int16_t xmax = 128 ;
 int16_t ymin = 0;

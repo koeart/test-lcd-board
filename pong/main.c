@@ -45,16 +45,18 @@ int main (void)
 	sei ();
 
 	lcd_cls ();
-	lcd_printp (PSTR("hello world!\r\n"), 0);
-	wait_ms(1000);
+lcd_line (0,0,127,63,1);
+	wait_ms(3000);
 	lcd_cls();
 int auswahl;
 auswahl = 1;
 	while(1)
 	{
+	ausrichtung = unten;
 	
 //lcd_write_number_u(ausrichtung);
 //wait_ms(5000);
+
 	
 		lcd_printp_at(3,0,PSTR("1: PONG\r\n"),0);
 		lcd_printp_at(3,2,PSTR("2: Tetris\r\n"),0);
@@ -74,12 +76,11 @@ auswahl = 1;
 				pong();
 				break;
 			case(2) :
-				lcd_cls();
 				tetris();
 				break;
 			}
 		}
-		
+
 	}
 
 }

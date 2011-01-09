@@ -83,7 +83,7 @@ void wait_ms (uint16_t time)
 		wait_1ms ();
 }
 
-void/ LCD_Init (void)
+void LCD_Init (void)
 {
 	lcd_xpos = 0;
 	lcd_ypos = 0;
@@ -214,34 +214,67 @@ void lcd_putc (uint8_t x, uint8_t y, uint8_t c, uint8_t mode)
 	}
 
 	c &= 0x7f;
-	
-	adress = y * 128 + x * 6;
-	adress &= 0x3FF;
-		
-	for (i = 0; i < 6; i++)
-	{
-		ch = pgm_read_byte (&font8x6[0][0] + i + c * 6);
-
-		switch (mode)
+	switch (ausrichtung) {
+	case(unten):
+		adress = y * 128 + x * 6;	//y = [0,7] (page), x= [0,21] (column, start) 0*128 + 0 = 0
+		adress &= 0x3FF;
+			
+		for (i = 0; i < 6; i++)
 		{
-			case 0:
-				display_buffer[adress+i] = ch;
-				break;
-			case 1:
-				display_buffer[adress+i] |= ch;
-				break;
-			case 2:
-				display_buffer[adress+i] ^= ch;
-				break;
-			case 3:
-				display_buffer[adress+i] &= ch;
-				break;
-			case 4:
-				display_buffer[adress+i] &= ~ch;
-				break;
+			ch = pgm_read_byte (&font8x6[0][0] + i + c * 6); //ch = 8 Bit, i == byte #
+			
+			switch (mode)
+			{
+				case 0:
+					display_buffer[adress+i] = ch;
+					break;
+				case 1:
+					display_buffer[adress+i] |= ch;
+					break;
+				case 2:
+					display_buffer[adress+i] ^= ch;
+					break;
+				case 3:
+					display_buffer[adress+i] &= ch;
+					break;
+				case 4:
+					display_buffer[adress+i] &= ~ch;
+					break;
+			}
+			
+			set_adress (adress + i, display_buffer[adress + i]);
 		}
-		
-		set_adress (adress + i, display_buffer[adress + i]);
+	break;
+	case(rechts):
+		adress = x * 128 + (120 - y * 6);		//x [0,7] (Page), y [0,21] (columm start) 0 * 128 + (120) = 120 (+8 height)
+		adress &= 0x3FF;
+			
+		for (i = 0; i < 6; i++)			//je 1 Column beschreiben (x+1)
+		{
+			ch = pgm_read_byte (&font8x6[0][0] + i + c * 6);		//read adress of font
+
+			switch (mode)
+			{
+				case 0:
+					display_buffer[adress+i] = ch;
+					break;
+				case 1:
+					display_buffer[adress+i] |= ch;
+					break;
+				case 2:
+					display_buffer[adress+i] ^= ch;
+					break;
+				case 3:
+					display_buffer[adress+i] &= ch;
+					break;
+				case 4:
+					display_buffer[adress+i] &= ~ch;
+					break;
+			}
+			
+			set_adress (adress + i, display_buffer[adress + i]);
+		}
+	break;
 	}
 }
 
@@ -399,7 +432,8 @@ void lcd_plot (uint8_t xpos, uint8_t ypos, uint8_t mode)
 {
 	uint16_t adress;
 	uint8_t mask;
-	if(ausrichtung == unten) {
+	switch(ausrichtung) {
+		case(unten):
 		if ((xpos < DISP_W) && (ypos < DISP_H))
 		{
 		adress = (ypos / 8) * DISP_W + xpos;		// adress = 0/8 * 128 + 0   = 0
@@ -422,14 +456,17 @@ void lcd_plot (uint8_t xpos, uint8_t ypos, uint8_t mode)
 		
 		set_adress (adress, display_buffer[adress]);
 		}
-	}
-	if(ausrichtung == rechts) {
-		if ((xpos < DISP_W) && (ypos < DISP_H))
+	break;
+	case(rechts):
+		if ((ypos < DISP_W) && (xpos < DISP_H))
 		{
-		adress = (ypos / 8) * DISP_W + xpos;		// adress = 0/8 * 128 + 0   = 0
-		mask = 1 << (ypos & 0x07);					// mask = 1<<0 = 1
 		
-		adress &= DISP_BUFFER - 1;
+		adress = (xpos / 8) * DISP_W + ((DISP_W -1) - ypos);		// adress = 0/8 * 128 + 0   = 0
+
+		
+		mask = 1 << (xpos & 0x07);					// mask = 1<<0 = 1
+		
+			adress &= DISP_BUFFER - 1;
 		
 		switch (mode)
 		{
@@ -446,6 +483,7 @@ void lcd_plot (uint8_t xpos, uint8_t ypos, uint8_t mode)
 		
 		set_adress (adress, display_buffer[adress]);
 		}
+		break;
 	}
 }
 
