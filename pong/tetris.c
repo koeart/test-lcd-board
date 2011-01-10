@@ -25,14 +25,27 @@ int y0max;
 
 void tetris() {
 	ausrichtung = rechts;
+	uint8_t x; uint8_t y;
+	x=10;
+	y=0;
 	if (debug)	{
 		lcd_write_number_u(ausrichtung);
 		wait_ms(5000);
 	}
 	lcd_cls();
-	lcd_putc(0,0,'T',0);
-	lcd_printp_at(0,2,PSTR("Hallo"),0);
-	wait_ms(5000);
+	for(y=0;y<120;y++)
+	{
+		
+		lcd_printp_at(x,y,PSTR("Tetris"),0);
+		wait_ms(100);
+	}
+	while(x>0) {
+		lcd_printp_at(x,y,PSTR("Tetris"),0);
+		x--;
+		wait_ms(100);
+	}
+
+	
 	lcd_cls();
 
 }

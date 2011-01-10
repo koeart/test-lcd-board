@@ -57,10 +57,11 @@ auswahl = 1;
 //wait_ms(5000);
 
 	
-		lcd_printp_at(3,0,PSTR("1: PONG\r\n"),0);
-		lcd_printp_at(3,2,PSTR("2: Tetris\r\n"),0);
-		lcd_printp_at(3,4,PSTR("Auswahl: "),0);
+		lcd_printp_at(5,0,PSTR("1: PONG\r\n"),0);
+		lcd_printp_at(5,10,PSTR("2: Tetris\r\n"),0);
+		lcd_printp_at(5,30,PSTR("Auswahl: "),0);
 		lcd_write_number_u(auswahl);
+		
 		//wait_ms(100);
 		if(get_key_press(1 << KEY_MINUS)) {
 			lcd_cls();
