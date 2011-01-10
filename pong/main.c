@@ -45,9 +45,8 @@ int main (void)
 	sei ();
 
 	lcd_cls ();
-lcd_line (0,0,127,63,1);
-	wait_ms(3000);
-	lcd_cls();
+if (debug) {lcd_line (0,0,127,63,1); wait_ms(3000);	lcd_cls();}
+	
 int auswahl;
 auswahl = 1;
 	while(1)
@@ -63,10 +62,15 @@ auswahl = 1;
 		lcd_printp_at(3,4,PSTR("Auswahl: "),0);
 		lcd_write_number_u(auswahl);
 		//wait_ms(100);
+		if(get_key_press(1 << KEY_MINUS)) {
+			lcd_cls();
+			lcd_printp_at(0,0,PSTR("ready"),0);
+			asm volatile("JMP 0xe000");
+		}
 		if(get_key_press(1 << KEY_PLUS)) {
 			if (auswahl < 2) auswahl++;
 			}
-		if(get_key_press(1 << KEY_MINUS)) {
+		if(get_key_press(1 << KEY_ESC)) {
 			if (auswahl > 1) auswahl--;
 			}
 		if(get_key_press(1 << KEY_ENTER)) {

@@ -30,7 +30,8 @@ void tetris() {
 		wait_ms(5000);
 	}
 	lcd_cls();
-	lcd_printp_at(0,21,PSTR("TETRIS!\r\n"),0);
+	lcd_putc(0,0,'T',0);
+	lcd_printp_at(0,2,PSTR("Hallo"),0);
 	wait_ms(5000);
 	lcd_cls();
 
