@@ -17,11 +17,16 @@ extern volatile uint8_t LCD_ORIENTATION;
 extern uint8_t lcd_xpos;
 extern uint8_t lcd_ypos;
 
+
 //*****************************************************************************
 // 
+
 void LCD_Init (void);
 void new_line(void);
+
+void _lcd_putc (uint8_t x, uint8_t y, uint8_t c, uint8_t mode, uint8_t draw);
 void lcd_putc (uint8_t x, uint8_t y, uint8_t c, uint8_t mode);
+void lcd_draw_stone(uint8_t x, uint8_t y, uint8_t c, uint8_t mode);
 //void send_byte (uint8_t data);
 void lcd_print (uint8_t *text, uint8_t mode);
 void lcd_print_at (uint8_t x, uint8_t y, uint8_t *text, uint8_t mode);

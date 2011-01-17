@@ -13,7 +13,8 @@
 #include "pong.h"
 #include "tetris.h"
 
-int debug = 0; //DEBUGING INFORMATIONEN -> enum
+uint8_t debug = 0; //DEBUGING INFORMATIONEN -> enum
+uint8_t lcd_optimized =0; //HAS to be TRUE from the beginning
 
 enum displ_orientation ausrichtung;
 	
@@ -57,8 +58,8 @@ auswahl = 1;
 //wait_ms(5000);
 
 	
-		lcd_printp_at(5,0,PSTR("1: PONG\r\n"),0);
-		lcd_printp_at(5,10,PSTR("2: Tetris\r\n"),0);
+		lcd_printp_at(5,0,PSTR("1: opt=0\r\n"),0);
+		lcd_printp_at(5,10,PSTR("2: opt=1\r\n"),0);
 		lcd_printp_at(5,30,PSTR("Auswahl: "),0);
 		lcd_write_number_u(auswahl);
 		
@@ -78,10 +79,14 @@ auswahl = 1;
 		switch(auswahl) {
 			case(1):
 				lcd_cls();
-				pong();
+				lcd_optimized = 0;
+				tetris();
 				break;
 			case(2) :
+				lcd_cls();
+				lcd_optimized = 1;
 				tetris();
+				lcd_optimized = 1;
 				break;
 			}
 		}

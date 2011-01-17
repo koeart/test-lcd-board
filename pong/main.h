@@ -5,6 +5,7 @@ uint8_t xmin;
 uint8_t xmax;
 uint8_t ymin;
 uint8_t ymax;
+uint8_t debug;
 
 enum displ_orientation {
 	unten, rechts
